@@ -1,0 +1,75 @@
+#include "SoftwareSerial.h"
+#include "DFRobotDFPlayerMini.h"
+
+//Code is a mix from the two links below
+//https://create.arduino.cc/projecthub/munir03125344286/play-audio-in-arduino-dde2e2
+//https://www.arduino.cc/en/Tutorial/BuiltInExamples/Button
+//Songs must be labeled as numbers and not names
+
+// Use pins 2 and 3 to communicate with DFPlayer Mini
+static const uint8_t PIN_MP3_TX = 2; // Connects to module's RX 
+static const uint8_t PIN_MP3_RX = 3; // Connects to module's TX 
+SoftwareSerial softwareSerial(PIN_MP3_RX, PIN_MP3_TX);
+
+// Create the Player object
+DFRobotDFPlayerMini player;
+
+// constants won't change. They're used here to set pin numbers:
+const int buttonPin1 = 5;     // the number of the pushbutton pin
+const int buttonPin2 = 4;     // the number of the pushbutton pin
+
+// variables will change:
+int buttonState1 = 0;         // variable for reading the pushbutton status
+int buttonState2 = 0;         // variable for reading the pushbutton status
+
+void setup() {
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin1, INPUT);
+  pinMode(buttonPin2, INPUT);
+  
+  
+  // Init USB serial port for debugging
+  Serial.begin(9600);
+  // Init serial port for DFPlayer Mini
+  softwareSerial.begin(9600);
+  
+}
+
+void loop() {
+  // read the state of the pushbutton value:
+  buttonState1 = digitalRead(buttonPin1);
+  buttonState2 = digitalRead(buttonPin2);
+  
+  if (buttonState1 == HIGH) {
+    // Start communication with DFPlayer Mini
+    if (player.begin(softwareSerial)) {
+     Serial.println("OK");
+
+      // Set volume to maximum (0 to 30).
+      player.volume(20);
+      // Play the first MP3 file on the SD card
+      player.play(1);
+	  delay(7000);                // waits for 7 seconds
+    } else {
+      Serial.println("Connecting to DFPlayer Mini failed!");
+    }
+  }
+  else if (buttonState2 == HIGH) {
+    // Start communication with DFPlayer Mini
+    if (player.begin(softwareSerial)) {
+     Serial.println("OK");
+
+      // Set volume to maximum (0 to 30).
+      player.volume(20);
+      // Play the first MP3 file on the SD card
+      player.play(2);
+	  delay(16000);                // waits for 16 seconds
+    } else {
+      Serial.println("Connecting to DFPlayer Mini failed!");
+    }
+  }
+  else {
+    // do nothing
+  }
+  
+}
