@@ -1,4 +1,4 @@
-These files help turn a cardboard box into a childs Arduino powered spaceshuttle with buttons, lights, and audio.
+These files help turn a cardboard box into a childs Arduino powered rocket with buttons, lights, and audio.
 
 Notes:
 
